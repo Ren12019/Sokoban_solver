@@ -2005,17 +2005,16 @@ int main(int argc, char** argv)
 	//引数が存在するかどうかを確認します。txtファイルがない場合はレベルを入力できません
 	if (argc != 2)
 	{
-		std::cerr << "  usage: " << argv[0] << "<sokoban_level>.txt"
-			<< std::endl;
+		std::cerr << "  usage: " << argv[0] << "<sokoban_level>.txt"<< std::endl;
 		return 0;
 	}
-
+	//test
+	std::cout << argv[0] << "," << argv[1] << std::endl;
 	//倉庫番レベルのtxtファイルを開き、文字列として保存します
 	fs.open(argv[1]);
 	if (!fs)
 	{
-		std::cerr << "  error opening file " << argv[1]
-			<< std::endl;
+		std::cerr << "  error opening file " << argv[1] << std::endl;
 		return 0;
 	}
 
