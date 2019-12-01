@@ -37,9 +37,8 @@ struct SearchStat
 }; //struct SearchStat
 
 /* 状態が目標状態であるかどうかを確認するために使用される関数。目標状態は
-*空のゴールもゴールも無い状態。があると仮定する
- *少なくとも1つの空の目標、つまり少なくとも1つの空の目標を持つレベルが存在する
- *ボックスと同じ量のゴールを持ち、1人のプレイヤーのみで満たす。
+*少なくとも1つの空のゴールがあるとき、そのゴールを埋める同じ量のボックス、
+ *および1人のプレーヤーが存在すると仮定します。
  *
  *前提条件：エージェントprogの現在の状態を表す状態オブジェクト
  *事後条件：目標の状態が見つかった場合はtrueを返し、それ以外の場合はfalseを返します
@@ -73,7 +72,7 @@ bool is_goal(State &cur_state)
 */
 void print_level(std::vector< std::vector<char> > &map)
 {
-	for (int i = 0; i < map.size(); i++)
+	for (unsigned int i = 0; i < map.size(); i++)
 	{
 		std::vector<char> vec = map[i];
 		std::vector<char>::iterator itr;
@@ -102,7 +101,7 @@ int h1(const State &cur_state)
 
 	while (getline(ss, line, '\n'))
 	{
-		for (int i = 0; i < line.length(); i++)
+		for (unsigned int i = 0; i < line.length(); i++)
 		{
 			//任意の状態でプレイヤーが1人だけ存在すると仮定します
 			//ユーザーが見つかった場合、x、yの位置を設定します
@@ -151,9 +150,9 @@ int h1(const State &cur_state)
 	}
 
 	//床の各ボックスについて、各空のゴールまでの距離を計算します
-	for (int i = 0; i < box_list.size(); i++)
+	for (unsigned int i = 0; i < box_list.size(); i++)
 	{
-		for (int j = 0; j < goal_list.size(); j++)
+		for (unsigned int j = 0; j < goal_list.size(); j++)
 		{
 			// xおよびyコードの距離を計算します
 			int xdist = box_list[i][0] - goal_list[j][0];
@@ -208,7 +207,7 @@ int h2(const State &cur_state)
 	{
 		std::vector<char> temp;
 		level_map.push_back(temp);
-		for (int i = 0; i < line.length(); i++)
+		for (unsigned int i = 0; i < line.length(); i++)
 		{
 			//ボックスが床にある場合、ボックスリストに追加
 			//ゴール上のボックスは無視できないため、無視します
@@ -228,7 +227,7 @@ int h2(const State &cur_state)
 	//床の各ボックスについて、壁に隣接しているかどうかを確認します
 	//隣接する2つの壁に隣接している場合、
 	//それはコーナーです
-	for (int i = 0; i < box_list.size(); i++)
+	for (unsigned int i = 0; i < box_list.size(); i++)
 	{
 		bool N_wall = false;
 		bool E_wall = false;
@@ -293,7 +292,7 @@ int h2(const State &cur_state)
 				//切れ目なくアクセス可能なタイルがあるかどうかを東に検索
 				//角が見つかるまで北の壁。ボックスとプレイヤーは無視されます
 				//移動できるため、アクセス可能なタイルと見なされます
-				for (int i = cur_box_x + 1; i < level_map[cur_box_y].size(); i++)
+				for (unsigned int i = cur_box_x + 1; i < level_map[cur_box_y].size(); i++)
 				{
 					//途中で目標が見つかった場合、安全でない位置にはなりません
 					if ((level_map[cur_box_y][i] == '.') ||
@@ -369,10 +368,10 @@ int h2(const State &cur_state)
 				{
 					//途中で目標が見つかった場合、安全でない位置にはなりません
 					if ((level_map[i][cur_box_x] == '.') ||
-					(level_map[i][cur_box_x] == '*') || (level_map[i][cur_box_x] == '+'))
+						(level_map[i][cur_box_x] == '*') || (level_map[i][cur_box_x] == '+'))
 					{
-					safe = true;
-					break;
+						safe = true;
+						break;
 					}
 
 					//東のタイルが壁でない場合、安全です
@@ -393,14 +392,14 @@ int h2(const State &cur_state)
 				//南を検索して、壊れていないタイルに沿ってアクセス可能なタイルがあるかどうかを確認します
 				//角が見つかるまで東の壁。ボックスとプレイヤーは無視されます
 				//移動できるため、アクセス可能なタイルと見なされます
-				for (int i = cur_box_y + 1; i < level_map.size(); i++)
+				for (unsigned int i = cur_box_y + 1; i < level_map.size(); i++)
 				{
 					//途中で目標が見つかった場合、安全でない位置にはなりません
 					if ((level_map[i][cur_box_x] == '.') ||
-					(level_map[i][cur_box_x] == '*') || (level_map[i][cur_box_x] == '+'))
+						(level_map[i][cur_box_x] == '*') || (level_map[i][cur_box_x] == '+'))
 					{
-					safe = true;
-					break;
+						safe = true;
+						break;
 					}
 
 					//東のタイルが壁でない場合、安全です
@@ -535,7 +534,7 @@ int h2(const State &cur_state)
 				//南を検索して、壊れていないタイルに沿ってアクセス可能なタイルがあるかどうかを確認します
 				//角が見つかるまで東の壁。ボックスとプレイヤーは無視されます
 				//移動できるため、アクセス可能なタイルと見なされます
-				for (int i = cur_box_y + 1; i < level_map.size(); i++)
+				for (unsigned int i = cur_box_y + 1; i < level_map.size(); i++)
 				{
 					//途中で目標が見つかった場合、安全でない位置にはなりません
 					if ((level_map[i][cur_box_x] == '.') ||
@@ -574,7 +573,7 @@ int h2(const State &cur_state)
 } //int h2(const State &cur_state)
 
 
-/*関数は、現在の状態からすべての有効な状態を生成するために使用されます
+/*この関数は、現在の状態からすべての有効な状態を生成するために使用されます
 *有効なレベルが想定されます。プレイヤーエージェントが1人だけで、ゴールが1つだけという意味
  *各ボックスに対して、少なくとも1つの目標と1つのボックス。
  *検索アルゴリズム関数で呼び出されます。
@@ -615,13 +614,13 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 	{
 		std::vector<char> temp;
 		level_map.push_back(temp);
-		for (int i = 0; i < line.length(); i++)
+		for (unsigned int i = 0; i < line.length(); i++)
 		{
 			if (!found)
 			{
 				//任意の状態でプレイヤーが1人だけ存在すると仮定します
 				//ユーザーが見つかった場合、foundをtrueに設定し、x、yの位置
-				if (line[i] == '@' | line[i] == '+')
+				if (line[i] == '@' || line[i] == '+')
 				{
 					player = line[i];
 					x = i;
@@ -657,7 +656,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -691,7 +690,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -747,7 +746,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -803,7 +802,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -851,7 +850,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -886,7 +885,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -942,7 +941,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -998,7 +997,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1046,7 +1045,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1080,7 +1079,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1136,7 +1135,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1192,7 +1191,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1240,7 +1239,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1274,7 +1273,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1330,7 +1329,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1386,7 +1385,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 		new_state = cur_state;
 		new_state.state_str = "";
 		// vector <vector <char >>を文字列に戻す
-		for (int i = 0; i < new_level_map.size(); i++)
+		for (unsigned int i = 0; i < new_level_map.size(); i++)
 		{
 			std::vector<char> temp = new_level_map[i];
 			std::vector<char>::iterator itr;
@@ -1419,7 +1418,7 @@ std::queue<State> gen_valid_states(const State &cur_state, const int smode = NON
 	return valid_moves;
 } //std::queue<State> gen_valid_states (const State &cur_state, const int smode = NONE)
 
-/* 関数は、初期状態で深さ優先探索アルゴリズムを実行します。
+/* この関数は、初期状態で深さ優先探索アルゴリズムを実行します。
  *無限の深さを持つ倉庫番パズルのため、探索されたリストは
  *無限ループを防ぐために使用されます。
  *
@@ -1505,7 +1504,7 @@ SearchStat bfs(State &initial_state)
 	return report;
 } //SearchStat bfs(State &initial_state)
 
-/* 関数は、初期状態で深さ優先探索アルゴリズムを実行します。
+/* この関数は、初期状態で深さ優先探索アルゴリズムを実行します。
  *無限の深さを持つ倉庫番パズルのため、探索されたリストは
  *無限ループを防ぐために使用されます。
  *
@@ -1599,7 +1598,7 @@ SearchStat dfs(State &initial_state)
 	return report;
 } //SearchStat dfs(State &initial_state)
 
-/*関数は、初期状態で統一コスト検索アルゴリズムを実行します。
+/*この関数は、初期状態で統一コスト検索アルゴリズムを実行します。
  *無限の深さを持つ倉庫番パズルのため、探索されたリストは
  *無限ループを防ぐために使用されます。
  *
@@ -1699,7 +1698,7 @@ SearchStat ucs(State &initial_state)
 	return report;
 } //SearchStat ucs(State &initial_state)
 
-/* 関数は、イニシャルで貪欲な最良の最初の検索アルゴリズムを実行します
+/* この関数は、イニシャルで貪欲な最良の最初の検索アルゴリズムを実行します
  *特定のヒューリスティック関数を使用した状態。
  *無限の深さを持つ倉庫番パズルのため、探索されたリストは
  *無限ループを防ぐために使用されます。
@@ -1801,7 +1800,7 @@ SearchStat gbfs(State &initial_state, int hfchoice)
 	return report;
 } //SearchStat gbfs(State &initial_state, int hfchoice)
 
-/*関数は、初期状態でA *検索検索アルゴリズムを実行します。
+/*この関数は、初期状態でA *検索検索アルゴリズムを実行します。
  *所定のヒューリスティック関数。
  *無限の深さを持つ倉庫番パズルのため、探索されたリストは
  *無限ループを防ぐために使用されます。
@@ -1913,8 +1912,8 @@ SearchStat as(State &initial_state, int hfchoice)
 void choose_search(State &init_state, int search_choice)
 {
 	timespec start, end;
-	long sec, nanosec;
-	int level_size;
+	long long sec, nanosec;
+	//int level_size;
 	SearchStat final_stat;
 	std::string user_choice;
 
